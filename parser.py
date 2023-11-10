@@ -38,7 +38,7 @@ def get_file_content(filename):
     return  data
 
 def prettify(filename):
-    try
+    try:
     {
         cmd = ["npx", "prettier", "--write", "--plugin=prettier-plugin-solidity", f'{filename}']
         p = subprocess.run(cmd,
