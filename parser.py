@@ -154,8 +154,8 @@ def fragment_code(data):
                 f = Fragment()
                 f.append_data(ufcs)
                 unframed_code.append(ufcs)
-                fragments.append([curr_comments, f.data])
-                curr_comments, ufcs = [], []
+                fragments.append([[], f.data])
+                ufcs = []
 
 
             in_fragment += 1
