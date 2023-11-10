@@ -54,20 +54,21 @@ def prettify(filename):
    
 
 def get_comment_type(line:str):
-    if line.strip().startswith('//'):
-        return COMMENTTYPE.SINGLELINE
-    elif line.strip().startswith('///'):
+    
+    if line.strip().startswith('///'):
         return COMMENTTYPE.SINGLELINE_NATSP
+    elif line.strip().startswith('//'):
+        return COMMENTTYPE.SINGLELINE
     elif "//" in line.strip():
         return COMMENTTYPE.SINGLE_INLINE
     elif line.strip().startswith('/*'):
         return COMMENTTYPE.MULTILINE_START
     elif line.strip().startswith('/**'):
         return COMMENTTYPE.NATSPEC_START
-    elif line.strip().startswith('*'):
-        return COMMENTTYPE.MULTILINE_BETWEEN
     elif line.strip().startswith('*/'):
         return COMMENTTYPE.MULTILINE_END
+    elif line.strip().startswith('*'):
+        return COMMENTTYPE.MULTILINE_BETWEEN
     else:
         return COMMENTTYPE.NO_COMMENT
 
