@@ -38,18 +38,22 @@ def get_file_content(filename):
     return  data
 
 def prettify(filename):
-    cmd = ["npx", "prettier", "--write", "--plugin=prettier-plugin-solidity", f'{filename}']
-    p = subprocess.run(cmd,
-        cwd='./',
-        shell=False,  
-        stderr=subprocess.DEVNULL,
-        stdout=subprocess.DEVNULL,
-        capture_output = False,
-        universal_newlines=False)
-    if p.stdout == '':
+    try
+    {
+        cmd = ["npx", "prettier", "--write", "--plugin=prettier-plugin-solidity", f'{filename}']
+        p = subprocess.run(cmd,
+            cwd='./',
+            shell=False,  
+            stderr=subprocess.DEVNULL,
+            capture_output = True,
+            universal_newlines=False)
+        if p.stdout == '':
+            print("WARNING: Error occured during the prettification")
+    }
+    except Exception as ex:
         print("WARNING: Error occured during the prettification")
-        return False
-    return True
+
+   
 
 def get_comment_type(line:str):
     if line.strip().startswith('//'):
@@ -232,9 +236,8 @@ def fragment_code(data):
 
 
 def main(args):
-    data = get_file_content(args.file)
     prettify(args.file)
-
+    data = get_file_content(args.file)
     f= fragment_code(data)
 
 if __name__=='__main__':
