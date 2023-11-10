@@ -44,7 +44,7 @@ def prettify(filename):
             cwd='./',
             shell=False,  
             stderr=subprocess.DEVNULL,
-            capture_output = True,
+            capture_output = False,
             universal_newlines=False)
     except Exception as ex:
         print("WARNING: Error occured during the prettification", ex)
