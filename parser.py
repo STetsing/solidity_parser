@@ -47,7 +47,7 @@ def prettify(filename):
             capture_output = True,
             universal_newlines=False)
     except Exception as ex:
-        print("WARNING: Error occured during the prettification")
+        print("WARNING: Error occured during the prettification", ex)
 
    
 
