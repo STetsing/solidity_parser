@@ -39,7 +39,6 @@ def get_file_content(filename):
 
 def prettify(filename):
     try:
-    {
         cmd = ["npx", "prettier", "--write", "--plugin=prettier-plugin-solidity", f'{filename}']
         p = subprocess.run(cmd,
             cwd='./',
@@ -49,7 +48,6 @@ def prettify(filename):
             universal_newlines=False)
         if p.stdout == '':
             print("WARNING: Error occured during the prettification")
-    }
     except Exception as ex:
         print("WARNING: Error occured during the prettification")
 
