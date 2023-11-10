@@ -81,7 +81,7 @@ def fragment_code(data):
     subfrag_curr = None
     in_comment = False
     curr_comments = []
-    closed = False
+    closed = True
     function_multilines = []
 
     for line in data:
