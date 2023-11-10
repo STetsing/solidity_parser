@@ -106,11 +106,13 @@ def fragment_code(data):
             continue            
 
         elif cm is COMMENTTYPE.SINGLE_INLINE:
-            code, com = line.split('//')
+            s = line.split('//')
+            code = s[0]
+            com = list(s[1:])
             f = Fragment()
             f.add(code)
             f.comments.append(com)
-            fragments.append([[com], [code]])
+            fragments.append([com, [code]])
             continue
 
         if cm is COMMENTTYPE.SINGLELINE and not closed and in_fragment:
