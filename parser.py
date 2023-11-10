@@ -3,8 +3,8 @@ import argparse
 import subprocess
 import os
 
-parser = argparse.ArgumentParser()
-parser.add_argument('--file', type=str, default='./test_files/Storage.sol')
+parse_args = argparse.ArgumentParser()
+parse_args.add_argument('--file', type=str, default='./test_files/Storage.sol')
 
 class COMMENTTYPE(Enum): 
     SINGLELINE=0
@@ -241,5 +241,5 @@ def main(args):
     f= fragment_code(data)
 
 if __name__=='__main__':
-    args = parser.parse_args()
+    args = parse_args.parse_args()
     main(args)
