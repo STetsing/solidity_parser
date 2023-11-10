@@ -108,7 +108,7 @@ def fragment_code(data):
             f = Fragment()
             f.add(code)
             f.comments.append(com)
-            fragments.append([com, code])
+            fragments.append([[com], [code]])
             continue
 
         if cm is COMMENTTYPE.SINGLELINE and not closed and in_fragment:
@@ -122,6 +122,8 @@ def fragment_code(data):
             continue
         
         elif cm is COMMENTTYPE.SINGLELINE and not in_fragment:
+            if 'SPDX' in line: # ignore comments with lisence
+                continue
             curr_comments.append(line)
             continue
 
@@ -221,15 +223,19 @@ def fragment_code(data):
             if in_fragment > 0:
                 subfrag_curr.add(line)
 
-
-    return fragments, unframed_code
+    # filter only commented code
+    comment_codes = []
+    for cm , co in fragments:
+        if len(cm):
+            comment_codes.append([cm, co])
+    return comment_codes #,fragments, unframed_code
 
 
 def main(args):
     data = get_file_content(args.file)
     prettify(args.file)
 
-    f, u = fragment_code(data)
+    f= fragment_code(data)
 
 if __name__=='__main__':
     args = parser.parse_args()
