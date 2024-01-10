@@ -33,7 +33,7 @@ class Fragment():
             self.add(l)
 
 def get_file_content(filename):
-    with open(filename, 'r') as fl:
+    with open(str(filename), 'r') as fl:
         data = fl.readlines()
     return  data
 

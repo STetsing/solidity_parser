@@ -12,6 +12,7 @@ def extract_comment_code_pairs(file_path):
 
         # Create pairs of comments and associated code
         comment_code_pairs = []
+        code_above_comments = []
 
         current_comment = ""
         inside_curly_brackets = False
@@ -46,7 +47,7 @@ def extract_comment_code_pairs(file_path):
                         bracket_counter += 1
                     elif content[code_start] == '}':
                         bracket_counter -= 1
-                    code_start += 1
+                    code_start += 1 # alwas increase until hit
 
                 code_end = code_start
 
@@ -57,8 +58,9 @@ def extract_comment_code_pairs(file_path):
 
             # Append the comment-code pair to the list when a code section is found
             if code_start < len(content) and not inside_curly_brackets and not content[comment_end:code_end].strip().startswith('//'):
-                comment_code_pairs.append((current_comment, content[comment_end:code_end].strip()))
+                comment_code_pairs.append((current_comment, content[comment_end:code_end].strip(), content[:comment_end].strip()))
                 current_comment = ""
+                code_above_comments.append(content[:comment_end].strip())
 
         return comment_code_pairs
 
@@ -69,11 +71,18 @@ if __name__ == "__main__":
 
     pairs = extract_comment_code_pairs(file_path)
 
-    for comment, code_section in pairs:
+    for comment, code_section, context in pairs:
         print("Comment:")
         print(comment)
         print("\nCode Section:")
         print(code_section)
         print("\n" + "="*40 + "\n")
+        print("\ncontext:")
+        print(context)
+        print("\n" + "="*40 + "\n")
+        print()
+        print()
+        print()
+        print()
 
 file_path = 'test/Storage.sol'
