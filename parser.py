@@ -4,7 +4,7 @@ import subprocess
 import os
 
 parse_args = argparse.ArgumentParser()
-parse_args.add_argument('--file', type=str, default='./test_files/Storage.sol')
+parse_args.add_argument('--file', type=str, default='./test/Storage.sol')
 
 class COMMENTTYPE(Enum): 
     SINGLELINE=0
@@ -235,10 +235,16 @@ def fragment_code(data):
 
 
 def main(args):
-    prettify(args.file)
+    #prettify(args.file)
     data = get_file_content(args.file)
     f= fragment_code(data)
+    for comment, code_pair in f:
+        print(f"Comment: {''.join(comment)}")
+        print(f"Code: {''.join(code_pair)}")
+        print("_"*100)
+        print("\n")
 
 if __name__=='__main__':
     args = parse_args.parse_args()
     main(args)
+    

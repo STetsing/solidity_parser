@@ -64,22 +64,75 @@ def extract_comment_code_pairs(file_path):
 
         return comment_code_pairs
 
+def is_nested_code(code):
+        return True if str("        ") in code else False
+
+def hasMarkers(code):
+    if '}' in code and '{' in code:
+        return True
+    else:
+        return False
+
+def is_solidity_comment(line):
+    # Regular expression to match Solidity comments (both single-line and multi-line)
+    comment_pattern = re.compile(r'\/\/[^\n]*|\/\*[\s\S]*?\*\/')
+
+    # Check if the line contains a Solidity comment
+    if re.match(comment_pattern, line):
+        return True
+    else:
+        # If the line doesn't match the comment pattern, it's considered Solidity code
+        return False
+
+def refine_comment_code_pairs(code):
+    lines = code.splitlines()
+    pairs = []
+    comments = []
+    for l in lines:
+        if is_solidity_comment(l):
+            comments.append(l)
+        else:
+            if len(comments):
+                pairs.append(["".join(comments), l])
+                comments = []
+    return pairs
+
+
+
+def refine_pairs(pairs):
+    new_pairs = []
+    filtered_pairs = []
+    for comment, code_section, context in pairs:
+        if is_nested_code(code_section):
+            if hasMarkers(code_section):
+                filtered_pairs.append([comment, code_section, context])
+            # filter out code section not having any markers as already in those having markers
+        else: 
+            filtered_pairs.append([comment, code_section, context])
+    for comment, code_section, context in filtered_pairs:
+        # first add main pair
+        new_pairs.append([comment, code_section, context])
+        # np = refine_comment_code_pairs(code_section)
+        # for cm, cd in np:
+        #     new_pairs.append([cm, cd, context])
+    return new_pairs
+
+
 
 if __name__ == "__main__":
     # Replace 'your_file.sol' with the path to your Solidity source file
     file_path = 'test/Storage.sol'
 
     pairs = extract_comment_code_pairs(file_path)
+    #pairs = refine_pairs(pairs)
 
     for comment, code_section, context in pairs:
         print("Comment:")
         print(comment)
         print("\nCode Section:")
+        print("\nCode is nested:", is_nested_code(code_section))
         print(code_section)
-        print("\n" + "="*40 + "\n")
-        print("\ncontext:")
-        print(context)
-        print("\n" + "="*40 + "\n")
+        print("\n" + "_"*100 + "\n")
         print()
         print()
         print()
